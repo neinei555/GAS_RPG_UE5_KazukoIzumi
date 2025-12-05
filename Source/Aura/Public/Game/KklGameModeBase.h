@@ -3,16 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Character/KklCharacterBase.h"
-#include "KklCharacter.generated.h"
+#include "GameFramework/GameModeBase.h"
+#include "KklGameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class AURA_API AKklCharacter : public AKklCharacterBase
+class AURA_API AKklGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-public:
-	AKklCharacter();
+	
 };
