@@ -10,6 +10,41 @@ AKklPlayerController::AKklPlayerController()
 	bReplicates = true;
 }
 
+void AKklPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	CurserTrace();
+}
+
+void AKklPlayerController::CurserTrace()
+{
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	if (!CursorHit.bBlockingHit) return;
+	LastActor = ThisActor;
+	ThisActor = Cast<IEnemyInterface>(CursorHit.GetActor());
+
+	if (LastActor == nullptr)
+	{
+		if (ThisActor !=nullptr)
+		{
+			ThisActor->HiglightActor();
+		}
+	}
+	else
+	{
+		if (ThisActor != LastActor)
+		{
+			LastActor->UnHiglightActor();
+			if (ThisActor != nullptr)
+			{
+				ThisActor->HiglightActor();
+			}
+		}
+	}
+
+}
+
 void AKklPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -53,3 +88,4 @@ void AKklPlayerController::Move(const FInputActionValue& Value)
 		ControllerPawn->AddMovementInput(RightDirection, InputActionVector.X);
 	}
 }
+
