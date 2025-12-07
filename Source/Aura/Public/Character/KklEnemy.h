@@ -17,8 +17,9 @@ class AURA_API AKklEnemy : public AKklCharacterBase,public IEnemyInterface
 
 public:
 	AKklEnemy();
-
 	virtual void HiglightActor() override;
 	virtual void UnHiglightActor() override;
-	
+
+protected:
+	virtual void BeginPlay() override;
 };

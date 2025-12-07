@@ -14,3 +14,26 @@ AKklCharacter::AKklCharacter()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 }
+
+void AKklCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	// Init Ability Actor Info for the server
+	InitAbilityActorInfo();
+}
+
+void AKklCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	// Init Ability Actor Info for the client
+	InitAbilityActorInfo();
+}
+
+void AKklCharacter::InitAbilityActorInfo()
+{
+	AKklPlayerState* KklPlayerState = GetPlayerState<AKklPlayerState>();
+	check(KklPlayerState);
+	KklPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(KklPlayerState, this);
+	AbilitySystemComponent = KklPlayerState->GetAbilitySystemComponent();
+	AttributeSet = KklPlayerState->GetAttributeSet();
+}

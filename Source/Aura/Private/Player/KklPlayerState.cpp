@@ -2,8 +2,22 @@
 
 
 #include "Player/KklPlayerState.h"
+#include "AbilitySystem/KklAbilitySystemComponent.h"
+#include "AbilitySystem/KklAttributeSet.h"
 
 AKklPlayerState::AKklPlayerState()
 {
 	NetUpdateFrequency = 100.f;
+
+	AbilitySystemComponent = CreateDefaultSubobject<UKklAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+
+	AttributeSet = CreateDefaultSubobject<UKklAttributeSet>(TEXT("AttributeSet"));
 }
+
+UAbilitySystemComponent* AKklPlayerState::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+

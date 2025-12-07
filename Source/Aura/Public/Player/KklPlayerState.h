@@ -4,15 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
+#include "AbilitySystemInterface.h"
+#include "AbilitySystemComponent.h"
+#include "AttributeSet.h"
 #include "KklPlayerState.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class AURA_API AKklPlayerState : public APlayerState
+class AURA_API AKklPlayerState : public APlayerState, public IAbilitySystemInterface
 {
+
 	GENERATED_BODY()
 public:
 	AKklPlayerState();
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+protected:
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
 };

@@ -2,12 +2,24 @@
 
 
 #include "Character/KklEnemy.h"
+#include "AbilitySystem/KklAbilitySystemComponent.h"
+#include "AbilitySystem/KklAttributeSet.h"
 #include "Aura/Aura.h"
 
 
 AKklEnemy::AKklEnemy()
 {
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
+    
+	AbilitySystemComponent = CreateDefaultSubobject<UKklAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+	AttributeSet = CreateDefaultSubobject<UKklAttributeSet>(TEXT("AttributeSet"));
+}
+void AKklEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 void AKklEnemy::HiglightActor()
 {

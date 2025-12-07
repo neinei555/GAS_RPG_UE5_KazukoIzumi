@@ -11,6 +11,11 @@ AKklCharacterBase::AKklCharacterBase()
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+UAbilitySystemComponent* AKklCharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
 void AKklCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();

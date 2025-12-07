@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Character/KklCharacterBase.h"
+#include "Player/KklPlayerState.h"
 #include "KklCharacter.generated.h"
 
 /**
@@ -15,4 +16,8 @@ class AURA_API AKklCharacter : public AKklCharacterBase
 	GENERATED_BODY()
 public:
 	AKklCharacter();
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
+private:
+	void InitAbilityActorInfo();
 };
