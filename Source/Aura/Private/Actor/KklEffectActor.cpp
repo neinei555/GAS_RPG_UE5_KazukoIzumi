@@ -21,6 +21,7 @@ void AKklEffectActor::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Oth
 		const UKklAttributeSet* AttributeSet = Cast<UKklAttributeSet>(ASCIntrface->GetAbilitySystemComponent()->GetAttributeSet(UKklAttributeSet::StaticClass()));
 		UKklAttributeSet* MutableAttributeSet = const_cast<UKklAttributeSet*>(AttributeSet);
 			MutableAttributeSet->SetHealth( MutableAttributeSet->GetHealth() + 25.f);
+			MutableAttributeSet->SetMana(MutableAttributeSet->GetMana() + 25.f);
 			Destroy();
 	}
 }

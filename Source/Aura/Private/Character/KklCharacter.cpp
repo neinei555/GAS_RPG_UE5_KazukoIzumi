@@ -36,4 +36,12 @@ void AKklCharacter::InitAbilityActorInfo()
 	KklPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(KklPlayerState, this);
 	AbilitySystemComponent = KklPlayerState->GetAbilitySystemComponent();
 	AttributeSet = KklPlayerState->GetAttributeSet();
+
+	if (AKklPlayerController* KklPC = Cast<AKklPlayerController>(GetController()))
+	{
+		if (AKklHUD* KklHUD = Cast<AKklHUD>(KklPC->GetHUD()))
+		{
+			KklHUD->InitOverlay(KklPC, KklPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
 }

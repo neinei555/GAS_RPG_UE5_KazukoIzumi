@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Character/KklCharacterBase.h"
 #include "Player/KklPlayerState.h"
+#include "Player/KklPlayerController.h"
+#include "UI/HUD/KklHUD.h"
 #include "KklCharacter.generated.h"
 
 /**

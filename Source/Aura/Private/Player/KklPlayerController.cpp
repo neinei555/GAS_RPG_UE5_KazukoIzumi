@@ -51,8 +51,10 @@ void AKklPlayerController::BeginPlay()
 	check(KklInputMappingContext);
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(Subsystem);
-	Subsystem->AddMappingContext(KklInputMappingContext, 0);
+	if (Subsystem != nullptr)
+	{
+		Subsystem->AddMappingContext(KklInputMappingContext, 0);
+	}
 
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
