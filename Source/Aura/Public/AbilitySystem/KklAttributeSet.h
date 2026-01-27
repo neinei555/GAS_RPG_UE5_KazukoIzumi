@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
 #include "AbilitySystemComponent.h"
+#include "GameplayEffect.h"
 #include "KklAttributeSet.generated.h"
 
 
@@ -16,6 +17,39 @@
 /**
  * 
  */
+USTRUCT()
+struct FEffectProperties
+{
+	GENERATED_BODY()
+
+	FEffectProperties() {}
+
+	FGameplayEffectContextHandle EffectContextHandle;
+
+	UPROPERTY()
+	UAbilitySystemComponent* SourceASC=nullptr;
+
+	UPROPERTY()
+	AActor* SourceAvatarActor=nullptr;
+
+	UPROPERTY()
+	AController* SourceController=nullptr;
+	
+	UPROPERTY()
+	ACharacter* SourceCharacter=nullptr;
+
+	UPROPERTY()
+	UAbilitySystemComponent* TargetASC=nullptr;
+
+	UPROPERTY()
+	AActor* TargetAvatarActor=nullptr;
+
+	UPROPERTY()
+	AController* TargetController=nullptr;
+	
+	UPROPERTY()
+	ACharacter* TargetCharacter=nullptr;
+};
 UCLASS()
 class AURA_API UKklAttributeSet : public UAttributeSet
 {
@@ -24,6 +58,9 @@ public:
 	UKklAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Vital Attributes")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UKklAttributeSet, Health)
@@ -51,4 +88,7 @@ public:
 
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldValue) const;
+
+private:
+	void SetEffect(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
 };
