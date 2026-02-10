@@ -22,4 +22,8 @@ void AKklCharacterBase::BeginPlay()
 	
 }
 
+void AKklCharacterBase::InitAbilityActorInfo()
+{
+}
+
 

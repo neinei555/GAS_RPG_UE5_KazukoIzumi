@@ -2,6 +2,8 @@
 
 
 #include "Character/KklCharacter.h"
+
+#include "AbilitySystem/KklAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 AKklCharacter::AKklCharacter()
 {
@@ -34,6 +36,7 @@ void AKklCharacter::InitAbilityActorInfo()
 	AKklPlayerState* KklPlayerState = GetPlayerState<AKklPlayerState>();
 	check(KklPlayerState);
 	KklPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(KklPlayerState, this);
+	Cast<UKklAbilitySystemComponent>(KklPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 	AbilitySystemComponent = KklPlayerState->GetAbilitySystemComponent();
 	AttributeSet = KklPlayerState->GetAttributeSet();
 

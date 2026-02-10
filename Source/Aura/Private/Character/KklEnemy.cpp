@@ -19,8 +19,15 @@ AKklEnemy::AKklEnemy()
 void AKklEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	InitAbilityActorInfo();
 }
+
+void AKklEnemy::InitAbilityActorInfo()
+{
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UKklAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+}
+
 void AKklEnemy::HiglightActor()
 {
 	GetMesh()->SetRenderCustomDepth(true);
