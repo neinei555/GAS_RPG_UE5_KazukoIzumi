@@ -343,7 +343,7 @@
                 <option name="codeReferences">
                   <list>
                     <CodeReferencesBean>
-                      <option name="content" value="    xlmhg UTznvkozbVuuvxgXlmgvcgSzmwov VuuvxgXlmgvcgSzmwov = Wzgz.VuuvxgHkvx.TvgXlmgvcg();&#9;" />
+                      <option name="content" value="    const FGameplayEffectContextHandle EffectContextHandle = Data.EffectSpec.GetContext();&#9;" />
                       <option name="end_line" value="44" />
                       <option name="filename" value="KklAttributeSet.cpp" />
                       <option name="language" value="cpp" />
