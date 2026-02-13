@@ -47,4 +47,5 @@ void AKklCharacter::InitAbilityActorInfo()
 			KklHUD->InitOverlay(KklPC, KklPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
+	InitializePrimaryAttributes();
 }

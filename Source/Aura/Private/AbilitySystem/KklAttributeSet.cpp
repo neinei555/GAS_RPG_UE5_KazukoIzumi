@@ -23,7 +23,11 @@ void UKklAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
- 
+
+	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet, Strength, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet, Resilience, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
 }
 
 void UKklAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -106,6 +110,26 @@ void UKklAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldValue) const
 void UKklAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldValue) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, MaxMana, OldValue);
+}
+
+void UKklAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, Strength, OldValue);
+}
+
+void UKklAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, Intelligence, OldValue);
+}
+
+void UKklAttributeSet::OnRep_Resilience(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, Resilience, OldValue);
+}
+
+void UKklAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, Vigor, OldValue);
 }
 
 
