@@ -11,9 +11,7 @@
 UKklAttributeSet::UKklAttributeSet()
 {
 	InitHealth(50.f);
-	InitMaxHealth(100.f);
 	InitMana(25.f);
-	InitMaxMana(50.f);
 }
 
 void UKklAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -28,17 +26,24 @@ void UKklAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet, Resilience, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
+	
+	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet, Armor, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet, ArmorPenetration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet,BlockChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet,CriticalHitChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet,CriticalHitDamage, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKklAttributeSet,CriticalHitResistance, COND_None, REPNOTIFY_Always);
 }
 
 void UKklAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
 
-	if (Attribute ==GetHealthAttribute())
+	if (Attribute == GetHealthAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
 	}
-	if (Attribute ==GetManaAttribute())
+	if (Attribute == GetManaAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxMana());
 	}
@@ -128,6 +133,46 @@ void UKklAttributeSet::OnRep_Resilience(const FGameplayAttributeData& OldValue) 
 }
 
 void UKklAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, Vigor, OldValue);
+}
+
+void UKklAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, Vigor, OldValue);
+}
+
+void UKklAttributeSet::OnRep_ArmorPenetration(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, Vigor, OldValue);
+}
+
+void UKklAttributeSet::OnRep_BlockChance(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, Vigor, OldValue);
+}
+
+void UKklAttributeSet::OnRep_CriticalHitChance(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, Vigor, OldValue);
+}
+
+void UKklAttributeSet::OnRep_CriticalHitDamage(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, Vigor, OldValue);
+}
+
+void UKklAttributeSet::OnRep_CriticalHitResistance(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, Vigor, OldValue);
+}
+
+void UKklAttributeSet::OnRep_HealthRegeneration(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, Vigor, OldValue);
+}
+
+void UKklAttributeSet::OnRep_ManaRegeneration(const FGameplayAttributeData& OldValue) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UKklAttributeSet, Vigor, OldValue);
 }
