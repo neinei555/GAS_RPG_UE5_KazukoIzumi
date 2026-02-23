@@ -43,3 +43,8 @@ void AKklEnemy::UnHiglightActor()
 	Weapon->SetRenderCustomDepth(false);
 
 }
+
+int32 AKklEnemy::GetPlayerLevel()
+{
+	return Level;
+}

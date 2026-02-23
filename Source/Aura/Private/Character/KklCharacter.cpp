@@ -31,6 +31,12 @@ void AKklCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
+int32 AKklCharacter::GetPlayerLevel()
+{
+	AKklPlayerState* KklPlayerState = GetPlayerState<AKklPlayerState>();
+	return KklPlayerState->GetPlayerLevel();
+}
+
 void AKklCharacter::InitAbilityActorInfo()
 {
 	AKklPlayerState* KklPlayerState = GetPlayerState<AKklPlayerState>();

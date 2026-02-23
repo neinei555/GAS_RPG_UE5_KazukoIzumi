@@ -17,11 +17,19 @@ class AURA_API AKklEnemy : public AKklCharacterBase,public IEnemyInterface
 
 public:
 	AKklEnemy();
+	/**  Enemy Interface  */
 	virtual void HiglightActor() override;
 	virtual void UnHiglightActor() override;
-
+	/**  Enemy Interface  */
+	
+	/**  Combat Interface  */
+	virtual int32 GetPlayerLevel() override;
+	/**  Combat Interface  */
 protected:
 	virtual void BeginPlay() override;
 
-	virtual void InitAbilityActorInfo();
+	virtual void InitAbilityActorInfo() override;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Character class Defaults")
+	int32 Level=1;
 };

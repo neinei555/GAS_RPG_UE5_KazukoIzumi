@@ -29,10 +29,11 @@ void AKklCharacterBase::InitAbilityActorInfo()
 }
 
 void AKklCharacterBase::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> Effect, float Level) const
-{
+{  
 	check(IsValid(GetAbilitySystemComponent()));
 	check(IsValid(Effect));
-	const FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	 FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	ContextHandle.AddSourceObject(this);
 	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(Effect, Level, ContextHandle);
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), GetAbilitySystemComponent());
 
@@ -42,6 +43,7 @@ void AKklCharacterBase::InitializeDefaultAttributes()
 {
 	ApplyEffectToSelf(DefaultPrimaryAttributes,1.0);
 	ApplyEffectToSelf(DefaultSecondaryAttributes,1.0);
+	ApplyEffectToSelf(DefaultVitalAttributes,1.0);
 }
 
 

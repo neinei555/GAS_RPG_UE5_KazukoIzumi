@@ -4,6 +4,7 @@
 #include "Player/KklPlayerState.h"
 #include "AbilitySystem/KklAbilitySystemComponent.h"
 #include "AbilitySystem/KklAttributeSet.h"
+#include "Net/UnrealNetwork.h"
 
 AKklPlayerState::AKklPlayerState()
 {
@@ -16,8 +17,19 @@ AKklPlayerState::AKklPlayerState()
 	AttributeSet = CreateDefaultSubobject<UKklAttributeSet>(TEXT("AttributeSet"));
 }
 
+void AKklPlayerState::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(AKklPlayerState,Level);
+}
+
 UAbilitySystemComponent* AKklPlayerState::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+void AKklPlayerState::OnRep_Level(int32 OldLevel)
+{
 }
 

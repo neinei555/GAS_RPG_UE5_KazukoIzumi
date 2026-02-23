@@ -10,8 +10,7 @@
 
 UKklAttributeSet::UKklAttributeSet()
 {
-	InitHealth(50.f);
-	InitMana(25.f);
+
 }
 
 void UKklAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
