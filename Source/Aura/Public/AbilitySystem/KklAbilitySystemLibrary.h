@@ -19,4 +19,12 @@ public:
 
 	UFUNCTION(BlueprintPure,Category="KklAbilitySystemLibrary|WidgetController")
 	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
+	
+	UFUNCTION(BlueprintCallable,Category="KklAbilitySystemLibrary|WidgetController")
+	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
 };
+
+
+
+
+

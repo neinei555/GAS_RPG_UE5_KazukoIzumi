@@ -3,6 +3,9 @@
 
 #include "UI/WidegetController/AttributeMenuWidgetController.h"
 
+#include "KklGameplayTags.h"
+#include "AbilitySystem/KklAttributeSet.h"
+
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
 	Super::BindCallbacksToDependencies();
@@ -10,5 +13,9 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
-	Super::BroadcastInitialValues();
+	UKklAttributeSet* AS=CastChecked<UKklAttributeSet>(AttributeSet);
+	
+	FKklAttributeInfo Info=AttributeInfo->FindAttributeInfoForTag(FKklGameplayTags::Get().Attributes_Primary_Strength);
+	Info.AttributeValue=AS->GetStrength();
+	AttributeInfoDelegate.Broadcast(Info);
 }

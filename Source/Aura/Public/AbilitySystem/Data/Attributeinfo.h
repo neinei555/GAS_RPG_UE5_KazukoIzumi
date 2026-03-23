@@ -22,8 +22,8 @@ struct FKklAttributeInfo
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FText AttributeDescription=FText();
 
-	UPROPERTY(EditDefaultsOnly)
-	float AttributeBaseValue=0.0f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float AttributeValue=0.0f;
 	
 };
 /**

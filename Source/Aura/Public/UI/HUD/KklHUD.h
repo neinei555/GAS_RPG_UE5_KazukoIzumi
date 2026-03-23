@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "UI/WidegetController/AttributeMenuWidgetController.h"
 #include "UI/Widget/KklUserWidget.h"
 #include "UI/WidegetController/OverlayWidgetController.h"
 #include "KklHUD.generated.h"
@@ -17,16 +18,18 @@ class AURA_API AKklHUD : public AHUD
 	GENERATED_BODY()
 public:
 
-	UPROPERTY()
-	TObjectPtr<UKklUserWidget> OverlayWidget;
-
 	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& WCParams); ;
     
+	UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams);
+	
 	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS);
 protected:
 
 private:
 
+	UPROPERTY()
+	TObjectPtr<UKklUserWidget> OverlayWidget;
+	
 	UPROPERTY(EditAnywhere, Category = "KklHUD")
 	TSubclassOf<UKklUserWidget> OverlayWidgetClass;
 
@@ -35,4 +38,10 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
+
+    UPROPERTY()
+	TObjectPtr<UAttributeMenuWidgetController> AttributeMenuWidgetController;
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
 };
