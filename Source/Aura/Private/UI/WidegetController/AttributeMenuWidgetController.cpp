@@ -18,4 +18,5 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 	FKklAttributeInfo Info=AttributeInfo->FindAttributeInfoForTag(FKklGameplayTags::Get().Attributes_Primary_Strength);
 	Info.AttributeValue=AS->GetStrength();
 	AttributeInfoDelegate.Broadcast(Info);
+	for (auto i :FKklGameplayTags::Get())
 }
