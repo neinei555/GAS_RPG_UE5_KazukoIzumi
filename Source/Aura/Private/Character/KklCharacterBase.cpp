@@ -3,6 +3,7 @@
 #include "Character/KklCharacterBase.h"
 
 #include "EditorDirectories.h"
+#include "AbilitySystem/KklAbilitySystemComponent.h"
 
 AKklCharacterBase::AKklCharacterBase()
 {
@@ -44,6 +45,14 @@ void AKklCharacterBase::InitializeDefaultAttributes()
 	ApplyEffectToSelf(DefaultPrimaryAttributes,1.0);
 	ApplyEffectToSelf(DefaultSecondaryAttributes,1.0);
 	ApplyEffectToSelf(DefaultVitalAttributes,1.0);
+}
+
+void AKklCharacterBase::AddCharacterAbilities()
+{
+	UKklAbilitySystemComponent* KklASC = Cast<UKklAbilitySystemComponent>(GetAbilitySystemComponent());
+	if (!HasAuthority()) return;
+	
+	KklASC->AddCharacterAbilities(StartupAbilities);
 }
 
 

@@ -22,6 +22,7 @@ void AKklCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 	// Init Ability Actor Info for the server
 	InitAbilityActorInfo();
+	AddCharacterAbilities();
 }
 
 void AKklCharacter::OnRep_PlayerState()

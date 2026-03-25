@@ -83,4 +83,37 @@ void FKklGameplayTags::InitializeNativeGameplayTags()
 	  FName("Attribute.Secondary.MaxMana"),
 	  FString("最大法力")
 	  );
+	
+	/*
+	 * Input Tags
+	 */
+	GameplayTags.InputTag_LMB=UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("InputTag.LMB"),
+	FString("鼠标左键")
+	);
+	
+	GameplayTags.InputTag_RMB=UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("InputTag.RMB"),
+	FString("鼠标右键")
+	);
+	
+	GameplayTags.InputTag_1=UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("InputTag.1"),
+	FString("1")
+	);
+	
+	GameplayTags.InputTag_2=UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("InputTag.2"),
+	FString("2")
+	);
+	
+	GameplayTags.InputTag_3=UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("InputTag.3"),
+	FString("3")
+	);
+	
+	GameplayTags.InputTag_4=UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("InputTag.4"),
+	FString("4")
+	);
 }

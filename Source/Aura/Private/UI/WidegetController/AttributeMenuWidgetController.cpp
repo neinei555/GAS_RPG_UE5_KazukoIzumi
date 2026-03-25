@@ -8,15 +8,32 @@
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
-	Super::BindCallbacksToDependencies();
+	UKklAttributeSet* AS=CastChecked<UKklAttributeSet>(AttributeSet);
+	for (auto& Pair:AS->TagsToAttributes)
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda(
+			[this,Pair,AS](const FOnAttributeChangeData& Data)
+			{
+				BroadcastAttributeInfo(Pair.Key,Pair.Value());		
+			}
+			);
+	}
 }
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
 	UKklAttributeSet* AS=CastChecked<UKklAttributeSet>(AttributeSet);
 	
-	FKklAttributeInfo Info=AttributeInfo->FindAttributeInfoForTag(FKklGameplayTags::Get().Attributes_Primary_Strength);
-	Info.AttributeValue=AS->GetStrength();
+	for (auto& Pair:AS->TagsToAttributes)
+	{
+		BroadcastAttributeInfo(Pair.Key,Pair.Value());
+	}
+	
+}
+
+void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag,const FGameplayAttribute& Attribute) const
+{
+	FKklAttributeInfo Info=AttributeInfo->FindAttributeInfoForTag(AttributeTag);
+	Info.AttributeValue=Attribute.GetNumericValue(AttributeSet);
 	AttributeInfoDelegate.Broadcast(Info);
-	for (auto i :FKklGameplayTags::Get())
 }
