@@ -3,6 +3,10 @@
 
 #include "AbilitySystem/KklAbilitySystemComponent.h"
 
+#include <ThirdParty/ShaderConductor/ShaderConductor/External/DirectXShaderCompiler/include/dxc/DXIL/DxilConstants.h>
+
+#include "AbilitySystem/Abilites/KklGameplayAbility.h"
+
 void UKklAbilitySystemComponent::AbilityActorInfoSet()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UKklAbilitySystemComponent::EffectApplied);
@@ -13,8 +17,39 @@ void UKklAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<
 	for ( auto& StartupAbility : StartupAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec= FGameplayAbilitySpec(StartupAbility,1);
-		GiveAbility(AbilitySpec);
-		GiveAbilityAndActivateOnce(AbilitySpec);
+		if (const UKklGameplayAbility* KklAbility=Cast<UKklGameplayAbility>(AbilitySpec.Ability))
+		{
+		    AbilitySpec.DynamicAbilityTags.AddTag(KklAbility->StartupInputTag);
+			GiveAbility(AbilitySpec);
+		}
+	}
+}
+
+void UKklAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid())return;
+	for (FGameplayAbilitySpec& AbilitySpec: GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTag(InputTag))
+		{
+			AbilitySpecInputPressed(AbilitySpec);
+			if (!AbilitySpec.IsActive())
+			{
+				TryActivateAbility(AbilitySpec.Handle);
+			}
+		}
+	}
+}
+
+void UKklAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid())return;
+	for (FGameplayAbilitySpec& AbilitySpec: GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTag(InputTag))
+		{
+			AbilitySpecInputReleased(AbilitySpec);
+		}
 	}
 }
 

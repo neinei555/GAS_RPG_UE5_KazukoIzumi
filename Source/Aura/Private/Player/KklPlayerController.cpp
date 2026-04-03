@@ -1,19 +1,45 @@
 
 
 #include "Player/KklPlayerController.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "KklGameplayTags.h"
+#include "NavigationPath.h"
+#include "NavigationSystem.h"
+#include "Input/KKlEnhancedInputComponent.h"
 
 
 AKklPlayerController::AKklPlayerController()
 {
 	bReplicates = true;
+	Spline=CreateDefaultSubobject<USplineComponent>("Spline");
 }
 
 void AKklPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 	CurserTrace();
+	
+	AutoRun();
+}
+
+void AKklPlayerController::AutoRun()
+{
+	if (!bAutoRunning) return;
+	if (APawn* ControllerPawn = GetPawn())
+	{
+		const FVector LocationOnSpline=Spline->FindLocationClosestToWorldLocation(ControllerPawn->GetActorLocation(),ESplineCoordinateSpace::World);
+		const FVector Direction=Spline->FindDirectionClosestToWorldLocation(LocationOnSpline,ESplineCoordinateSpace::World);;
+		ControllerPawn->AddMovementInput(Direction);
+		
+		const float DistanceToDestination=(LocationOnSpline-CachedDestination).Length();
+		if (DistanceToDestination<=AutoRunAcceptanceRadius)
+		{
+			bAutoRunning=false;
+		}
+	}
 }
 
 void AKklPlayerController::CurserTrace()
@@ -45,6 +71,80 @@ void AKklPlayerController::CurserTrace()
 
 }
 
+void AKklPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	if (InputTag.MatchesTagExact(FKklGameplayTags::Get().InputTag_LMB))
+	{
+		bTargeting=ThisActor?true:false;
+		bAutoRunning=false;
+	}
+}
+
+void AKklPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	if (!InputTag.MatchesTagExact(FKklGameplayTags::Get().InputTag_LMB) || bTargeting)
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagReleased(InputTag);
+		}
+		return ;
+	}
+	
+	APawn* ControllPawn=GetPawn();
+	if (FollowTime<=ShortPressThreshold && ControllPawn)
+	{
+		UNavigationPath* NavPath=UNavigationSystemV1::FindPathToLocationSynchronously(this,ControllPawn->GetActorLocation(),CachedDestination);
+		if (NavPath)
+		{
+			Spline->ClearSplinePoints();
+			for (const FVector& PointLoc:NavPath->PathPoints)
+			{
+				Spline->AddSplinePoint(PointLoc,ESplineCoordinateSpace::World);
+			}
+			CachedDestination=NavPath->PathPoints[NavPath->PathPoints.Num()-1];
+			bAutoRunning=true;
+		}
+	}
+	FollowTime=0.f;
+	bTargeting=false;
+}
+
+void AKklPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	if (!InputTag.MatchesTagExact(FKklGameplayTags::Get().InputTag_LMB) || bTargeting)
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+		return ;
+	}
+		FollowTime+=GetWorld()->GetDeltaSeconds();
+		FHitResult HitResult;
+		if (GetHitResultUnderCursor(ECC_Visibility, false, HitResult))
+		{
+			CachedDestination=HitResult.ImpactPoint;
+		}
+		if (APawn* ControllerPawn = GetPawn())
+		{
+			const FVector WorldDirection=(CachedDestination-ControllerPawn->GetActorLocation()).GetSafeNormal();
+			ControllerPawn->AddMovementInput(WorldDirection);
+		}
+	
+
+}
+
+UKklAbilitySystemComponent* AKklPlayerController::GetASC()
+{
+	if (KklAbilitySystemComponent == nullptr)
+	{
+		KklAbilitySystemComponent=Cast<UKklAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	return KklAbilitySystemComponent;
+}
+
+
 void AKklPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -70,9 +170,10 @@ void AKklPlayerController::SetupInputComponent()
 {
 	APlayerController::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+	UKKlEnhancedInputComponent* KKlEnhancedInputComponent = CastChecked<UKKlEnhancedInputComponent>(InputComponent);
 
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AKklPlayerController::Move);
+	KKlEnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AKklPlayerController::Move);
+	KKlEnhancedInputComponent->BindAbilityAction(InputConfig,this,&ThisClass::AbilityInputTagPressed,&ThisClass::AbilityInputTagReleased,&ThisClass::AbilityInputTagHeld);
 }
 
 void AKklPlayerController::Move(const FInputActionValue& Value)
