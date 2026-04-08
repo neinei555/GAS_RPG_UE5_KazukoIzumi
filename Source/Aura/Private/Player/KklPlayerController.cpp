@@ -44,31 +44,16 @@ void AKklPlayerController::AutoRun()
 
 void AKklPlayerController::CurserTrace()
 {
-	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (!CursorHit.bBlockingHit) return;
 	LastActor = ThisActor;
 	ThisActor = Cast<IEnemyInterface>(CursorHit.GetActor());
 
-	if (LastActor == nullptr)
+	if (LastActor!=ThisActor)
 	{
-		if (ThisActor !=nullptr)
-		{
-			ThisActor->HiglightActor();
-		}
+		if (LastActor) LastActor->UnHiglightActor();
+		if (ThisActor) ThisActor->HiglightActor();
 	}
-	else
-	{
-		if (ThisActor != LastActor)
-		{
-			LastActor->UnHiglightActor();
-			if (ThisActor != nullptr)
-			{
-				ThisActor->HiglightActor();
-			}
-		}
-	}
-
 }
 
 void AKklPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
@@ -121,10 +106,9 @@ void AKklPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 		return ;
 	}
 		FollowTime+=GetWorld()->GetDeltaSeconds();
-		FHitResult HitResult;
-		if (GetHitResultUnderCursor(ECC_Visibility, false, HitResult))
+		if (CursorHit.bBlockingHit)
 		{
-			CachedDestination=HitResult.ImpactPoint;
+			CachedDestination=CursorHit.ImpactPoint;
 		}
 		if (APawn* ControllerPawn = GetPawn())
 		{

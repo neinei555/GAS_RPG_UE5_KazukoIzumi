@@ -24,6 +24,8 @@ public:
 
 	IEnemyInterface* ThisActor;
 	IEnemyInterface* LastActor;
+	
+	FHitResult CursorHit;
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;

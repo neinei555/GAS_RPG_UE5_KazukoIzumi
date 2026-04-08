@@ -25,6 +25,11 @@ void AKklCharacterBase::BeginPlay()
 	
 }
 
+FVector AKklCharacterBase::GetCombatSocketLocation()
+{
+	return Weapon->GetSocketLocation(WeaponTipSocketName);
+}
+
 void AKklCharacterBase::InitAbilityActorInfo()
 {
 }
